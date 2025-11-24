@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/configs/app_theme.dart';
 import 'core/configs/app_colors.dart';
+import 'core/configs/app_routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,8 +34,8 @@ class HungryApp extends StatelessWidget {
       title: 'Hungry',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      // TODO: Add routes configuration
-      // routes: AppRoutes.routes,
+      routes: AppRoutes.getRoutes(),
+      // TODO: Uncomment when SplashPage is implemented
       // initialRoute: AppRoutes.splash,
       home: const _TempHomePage(), // Temporary - will be replaced with Splash
     );
