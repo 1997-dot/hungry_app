@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'core/configs/app_theme.dart';
-import 'core/configs/app_colors.dart';
-import 'core/configs/app_routes.dart';
 
-void main() {
+import 'app.dart';
+import 'core/di/injector.dart';
+
+void main() async {
+  // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize dependency injection
+  await configureDependencies();
 
   // Set system UI overlay style
   SystemChrome.setSystemUIOverlayStyle(
@@ -16,58 +20,12 @@ void main() {
     ),
   );
 
-  // Set preferred orientations
-  SystemChrome.setPreferredOrientations([
+  // Set preferred orientations (portrait only)
+  await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((_) {
-    runApp(const HungryApp());
-  });
-}
+  ]);
 
-class HungryApp extends StatelessWidget {
-  const HungryApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Hungry',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      routes: AppRoutes.getRoutes(),
-      // TODO: Uncomment when SplashPage is implemented
-      // initialRoute: AppRoutes.splash,
-      home: const _TempHomePage(), // Temporary - will be replaced with Splash
-    );
-  }
-}
-
-// Temporary home page to test theme - will be removed later
-class _TempHomePage extends StatelessWidget {
-  const _TempHomePage();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.splashBackground,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'HUNGRY?',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 48,
-                fontWeight: FontWeight.w900,
-                color: AppColors.textLight,
-                letterSpacing: 2,
-                height: 1.0,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Run the app
+  runApp(const HungryApp());
 }
