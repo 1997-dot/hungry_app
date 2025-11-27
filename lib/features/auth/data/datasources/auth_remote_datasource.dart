@@ -22,7 +22,8 @@ abstract class AuthRemoteDataSource {
   Future<void> logout();
 }
 
-@Injectable(as: AuthRemoteDataSource)
+// Temporarily disabled for mock testing - will be re-enabled when connecting to backend
+// @Injectable(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final ApiClient _apiClient;
   final LocalStorageService _storageService;

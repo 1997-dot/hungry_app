@@ -14,6 +14,8 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
+import '../../features/auth/data/datasources/auth_mock_datasource.dart'
+    as _i306;
 import '../../features/auth/data/datasources/auth_remote_datasource.dart'
     as _i161;
 import '../../features/auth/data/repositories/auth_repository_impl.dart'
@@ -67,10 +69,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i932.NetworkInfoImpl(gh<_i895.Connectivity>()),
     );
     gh.factory<_i161.AuthRemoteDataSource>(
-      () => _i161.AuthRemoteDataSourceImpl(
-        gh<_i557.ApiClient>(),
-        gh<_i527.LocalStorageService>(),
-      ),
+      () => _i306.AuthMockDataSource(gh<_i527.LocalStorageService>()),
     );
     gh.factory<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(
