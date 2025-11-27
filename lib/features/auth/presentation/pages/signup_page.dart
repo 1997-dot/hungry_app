@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungry_app/core/configs/app_colors.dart';
+import 'package:hungry_app/core/configs/app_routes.dart';
 import 'package:hungry_app/core/di/injector.dart';
-import 'package:hungry_app/core/utils/routes.dart';
 import 'package:hungry_app/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:hungry_app/features/auth/presentation/blocs/auth_event.dart';
 import 'package:hungry_app/features/auth/presentation/blocs/auth_state.dart';
@@ -51,30 +51,31 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<AuthBloc>(),
-      child: Scaffold(
-        backgroundColor: AppColors.splashBackground,
-        body: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is AuthAuthenticated) {
-              Navigator.pushReplacementNamed(context, AppRoutes.home);
-            } else if (state is AuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            return SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+      child: Builder(
+        builder: (context) => Scaffold(
+          backgroundColor: AppColors.splashBackground,
+          body: BlocConsumer<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is AuthAuthenticated) {
+                Navigator.pushReplacementNamed(context, AppRoutes.home);
+              } else if (state is AuthError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              return SafeArea(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
                       const SizedBox(height: 40),
                       // Welcome text
                       Text(
@@ -434,6 +435,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             );
           },
+          ),
         ),
       ),
     );
