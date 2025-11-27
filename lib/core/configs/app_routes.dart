@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
-
-// TODO: Import page widgets as they are implemented
-// import '../../features/auth/presentation/pages/login_page.dart';
-// import '../../features/auth/presentation/pages/register_page.dart';
-// import '../../features/cart/presentation/pages/cart_page.dart';
-// import '../../features/checkout/presentation/pages/checkout_page.dart';
-// import '../../features/favorites/presentation/pages/favorites_page.dart';
-// import '../../features/home/presentation/pages/home_page.dart';
-// import '../../features/payment/presentation/pages/payment_success_page.dart';
-// import '../../features/product_details/presentation/pages/product_details_page.dart';
-// import '../../features/profile/presentation/pages/profile_page.dart';
-// import '../../features/search/presentation/pages/search_page.dart';
-// import '../../features/splash/presentation/pages/splash_page.dart';
+import '../../features/splash/presentation/pages/splash_page.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/signup_page.dart';
+import '../../features/home/presentation/pages/home_page.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -20,6 +11,7 @@ class AppRoutes {
   static const String splash = '/';
   static const String login = '/login';
   static const String register = '/register';
+  static const String signup = '/signup';
   static const String home = '/home';
   static const String productDetails = '/product-details';
   static const String cart = '/cart';
@@ -30,13 +22,13 @@ class AppRoutes {
   static const String search = '/search';
 
   /// Returns a map of all routes in the app
-  /// TODO: Uncomment routes as pages are implemented
   static Map<String, WidgetBuilder> getRoutes() {
     return {
-      // splash: (context) => const SplashPage(),
-      // login: (context) => const LoginPage(),
-      // register: (context) => const RegisterPage(),
-      // home: (context) => const HomePage(),
+      splash: (context) => const SplashPage(),
+      login: (context) => const LoginPage(),
+      register: (context) => const SignupPage(),
+      signup: (context) => const SignupPage(),
+      home: (context) => const HomePage(),
       // productDetails: (context) => const ProductDetailsPage(),
       // cart: (context) => const CartPage(),
       // checkout: (context) => const CheckoutPage(),

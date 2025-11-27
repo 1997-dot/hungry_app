@@ -49,28 +49,52 @@ class _AnimatedLogoState extends State<AnimatedLogo>
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Design reference dimensions
+    const designWidth = 430.0;
+    const designHeight = 932.0;
+
+    // Calculate responsive scale factors
+    final widthScale = screenWidth / designWidth;
+    final heightScale = screenHeight / designHeight;
+
+    // Use the smaller scale to ensure content fits on screen
+    final scale = widthScale < heightScale ? widthScale : heightScale;
+
     return FadeTransition(
       opacity: _fadeAnimation,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // "HUNGRY?" logo text
-          Image.asset(
-            'assets/images/placeholders/Hungry_.png',
-            width: 200,
-            height: 80,
-            fit: BoxFit.contain,
-            color: AppColors.textLight,
-          ),
-          const SizedBox(height: 40),
-          // Burger image
-          Image.asset(
-            'assets/images/products/splash.png',
-            width: 180,
-            height: 180,
-            fit: BoxFit.contain,
-          ),
-        ],
+      child: SizedBox(
+        width: screenWidth,
+        height: screenHeight,
+        child: Stack(
+          children: [
+            // "HUNGRY?" logo text - positioned at top
+            Positioned(
+              top: 290 * heightScale,
+              left: screenWidth / 2 - (258 * scale) / 2, // Center horizontally
+              child: Image.asset(
+                'assets/images/placeholders/Hungry_.png',
+                width: 258 * scale,
+                height: 60 * scale,
+                fit: BoxFit.contain,
+                color: AppColors.textLight,
+              ),
+            ),
+            // Burger image - positioned at bottom with proper spacing
+            Positioned(
+              bottom: screenHeight - (632 * heightScale) - (348 * scale),
+              left: screenWidth / 2 - (439 * scale) / 2, // Center horizontally
+              child: Image.asset(
+                'assets/images/products/splash.png',
+                width: 439 * scale,
+                height: 348 * scale,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

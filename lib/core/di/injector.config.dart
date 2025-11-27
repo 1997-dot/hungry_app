@@ -14,6 +14,15 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
+import '../../features/auth/data/datasources/auth_remote_datasource.dart'
+    as _i161;
+import '../../features/auth/data/repositories/auth_repository_impl.dart'
+    as _i153;
+import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
+import '../../features/auth/domain/usecases/login_usecase.dart' as _i188;
+import '../../features/auth/domain/usecases/logout_usecase.dart' as _i48;
+import '../../features/auth/domain/usecases/signup_usecase.dart' as _i57;
+import '../../features/auth/presentation/blocs/auth_bloc.dart' as _i85;
 import '../../features/splash/domain/usecases/check_auth_usecase.dart' as _i77;
 import '../../features/splash/presentation/blocs/splash_bloc.dart' as _i145;
 import '../network/api_client.dart' as _i557;
@@ -56,6 +65,34 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i932.NetworkInfo>(
       () => _i932.NetworkInfoImpl(gh<_i895.Connectivity>()),
+    );
+    gh.factory<_i161.AuthRemoteDataSource>(
+      () => _i161.AuthRemoteDataSourceImpl(
+        gh<_i557.ApiClient>(),
+        gh<_i527.LocalStorageService>(),
+      ),
+    );
+    gh.factory<_i787.AuthRepository>(
+      () => _i153.AuthRepositoryImpl(
+        gh<_i161.AuthRemoteDataSource>(),
+        gh<_i932.NetworkInfo>(),
+      ),
+    );
+    gh.factory<_i188.LoginUseCase>(
+      () => _i188.LoginUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i48.LogoutUseCase>(
+      () => _i48.LogoutUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i57.SignupUseCase>(
+      () => _i57.SignupUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i85.AuthBloc>(
+      () => _i85.AuthBloc(
+        gh<_i188.LoginUseCase>(),
+        gh<_i57.SignupUseCase>(),
+        gh<_i48.LogoutUseCase>(),
+      ),
     );
     return this;
   }

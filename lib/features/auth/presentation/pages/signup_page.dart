@@ -7,32 +7,41 @@ import 'package:hungry_app/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:hungry_app/features/auth/presentation/blocs/auth_event.dart';
 import 'package:hungry_app/features/auth/presentation/blocs/auth_state.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _addressController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _phoneController.dispose();
+    _addressController.dispose();
     super.dispose();
   }
 
-  void _handleLogin() {
+  void _handleSignup() {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-            LoginEvent(
+            SignupEvent(
+              name: _nameController.text.trim(),
               email: _emailController.text.trim(),
               password: _passwordController.text,
+              phone: _phoneController.text.trim(),
+              address: _addressController.text.trim(),
             ),
           );
     }
@@ -66,10 +75,10 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 60),
+                      const SizedBox(height: 40),
                       // Welcome text
                       Text(
-                        'Welcome Back!',
+                        'Create Account',
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
@@ -79,14 +88,65 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Sign in to continue',
+                        'Sign up to get started',
                         style: TextStyle(
                           fontSize: 16,
                           color: AppColors.textLight.withOpacity(0.7),
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 60),
+                      const SizedBox(height: 40),
+                      // Name field
+                      TextFormField(
+                        controller: _nameController,
+                        keyboardType: TextInputType.name,
+                        style: const TextStyle(color: AppColors.textLight),
+                        decoration: InputDecoration(
+                          labelText: 'Full Name',
+                          labelStyle: TextStyle(
+                            color: AppColors.textLight.withOpacity(0.7),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.1),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: AppColors.textLight,
+                              width: 2,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                            ),
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.person_outline,
+                            color: AppColors.textLight,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your full name';
+                          }
+                          if (value.length < 2) {
+                            return 'Name must be at least 2 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
                       // Email field
                       TextFormField(
                         controller: _emailController,
@@ -138,7 +198,110 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
+                      // Phone field
+                      TextFormField(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        style: const TextStyle(color: AppColors.textLight),
+                        decoration: InputDecoration(
+                          labelText: 'Phone Number',
+                          labelStyle: TextStyle(
+                            color: AppColors.textLight.withOpacity(0.7),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.1),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: AppColors.textLight,
+                              width: 2,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                            ),
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.phone_outlined,
+                            color: AppColors.textLight,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          if (value.length < 10) {
+                            return 'Please enter a valid phone number';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      // Address field
+                      TextFormField(
+                        controller: _addressController,
+                        keyboardType: TextInputType.streetAddress,
+                        style: const TextStyle(color: AppColors.textLight),
+                        maxLines: 2,
+                        decoration: InputDecoration(
+                          labelText: 'Address',
+                          labelStyle: TextStyle(
+                            color: AppColors.textLight.withOpacity(0.7),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.1),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: AppColors.textLight,
+                              width: 2,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                            ),
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.location_on_outlined,
+                            color: AppColors.textLight,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your address';
+                          }
+                          if (value.length < 5) {
+                            return 'Please enter a valid address';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
                       // Password field
                       TextFormField(
                         controller: _passwordController,
@@ -194,7 +357,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return 'Please enter a password';
                           }
                           if (value.length < 6) {
                             return 'Password must be at least 6 characters';
@@ -203,12 +366,12 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                       const SizedBox(height: 32),
-                      // Login button
+                      // Signup button
                       SizedBox(
                         height: 56,
                         child: ElevatedButton(
                           onPressed:
-                              state is AuthLoading ? null : _handleLogin,
+                              state is AuthLoading ? null : _handleSignup,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
                             foregroundColor: AppColors.textDark,
@@ -227,7 +390,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 )
                               : const Text(
-                                  'Login',
+                                  'Sign Up',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -235,27 +398,27 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                         ),
                       ),
-                      const SizedBox(height: 24),
-                      // Sign up button
+                      const SizedBox(height: 16),
+                      // Login button
                       TextButton(
                         onPressed: state is AuthLoading
                             ? null
                             : () {
-                                Navigator.pushNamed(context, AppRoutes.signup);
+                                Navigator.pop(context);
                               },
                         style: TextButton.styleFrom(
                           foregroundColor: AppColors.textLight,
                         ),
                         child: RichText(
                           text: TextSpan(
-                            text: "Don't have an account? ",
+                            text: "Already have an account? ",
                             style: TextStyle(
                               color: AppColors.textLight.withOpacity(0.7),
                               fontSize: 16,
                             ),
                             children: const [
                               TextSpan(
-                                text: 'Sign Up',
+                                text: 'Login',
                                 style: TextStyle(
                                   color: AppColors.textLight,
                                   fontWeight: FontWeight.bold,
