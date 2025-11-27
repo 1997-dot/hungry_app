@@ -14,6 +14,8 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
+import '../../features/splash/domain/usecases/check_auth_usecase.dart' as _i77;
+import '../../features/splash/presentation/blocs/splash_bloc.dart' as _i145;
 import '../network/api_client.dart' as _i557;
 import '../network/network_info.dart' as _i932;
 import '../services/analytics_service.dart' as _i222;
@@ -45,6 +47,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i222.AnalyticsService>(
       () => _i222.ConsoleAnalyticsService(),
+    );
+    gh.factory<_i77.CheckAuthUseCase>(
+      () => _i77.CheckAuthUseCase(gh<_i527.LocalStorageService>()),
+    );
+    gh.factory<_i145.SplashBloc>(
+      () => _i145.SplashBloc(gh<_i77.CheckAuthUseCase>()),
     );
     gh.lazySingleton<_i932.NetworkInfo>(
       () => _i932.NetworkInfoImpl(gh<_i895.Connectivity>()),
