@@ -33,7 +33,7 @@ class _SignupPageState extends State<SignupPage> {
     super.dispose();
   }
 
-  void _handleSignup() {
+  void _handleSignup(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
             SignupEvent(
@@ -371,8 +371,9 @@ class _SignupPageState extends State<SignupPage> {
                       SizedBox(
                         height: 56,
                         child: ElevatedButton(
-                          onPressed:
-                              state is AuthLoading ? null : _handleSignup,
+                          onPressed: state is AuthLoading
+                              ? null
+                              : () => _handleSignup(context),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
                             foregroundColor: AppColors.textDark,

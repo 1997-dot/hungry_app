@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _handleLogin() {
+  void _handleLogin(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
             LoginEvent(
@@ -208,8 +208,9 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 56,
                           child: ElevatedButton(
-                            onPressed:
-                                state is AuthLoading ? null : _handleLogin,
+                            onPressed: state is AuthLoading
+                                ? null
+                                : () => _handleLogin(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               foregroundColor: AppColors.textDark,
