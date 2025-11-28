@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
 import 'package:hungry_app/core/network/api_client.dart';
 import 'package:hungry_app/core/services/local_storage_service.dart';
 import 'package:hungry_app/core/utils/constants.dart';

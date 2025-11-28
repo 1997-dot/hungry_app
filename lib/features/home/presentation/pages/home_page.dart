@@ -70,32 +70,48 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            // Top Bar with Logo and User Name
+            // Top Bar with Logo and Profile
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Logo
-                  Image.asset(
-                    'assets/images/backgrounds/hun.png.png',
-                    height: 40,
+                  // Logo and User Name
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        'assets/images/backgrounds/hun.png.png',
+                        height: 40,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Hello, $_userName',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
                   ),
-                  // User Name and Logout
+                  // My Profile Button and Logout
                   Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Hello, $_userName',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black87,
-                            ),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to profile page
+                          // TODO: Implement profile navigation
+                        },
+                        child: const Text(
+                          'My Profile',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                            decoration: TextDecoration.underline,
                           ),
-                        ],
+                        ),
                       ),
                       const SizedBox(width: 8),
                       GestureDetector(
@@ -160,45 +176,43 @@ class _HomePageState extends State<HomePage> {
 
             const SizedBox(height: 20),
 
-            // Category Tabs
+            // Category Chips (Horizontal Scrollable)
             SizedBox(
-              height: 40,
+              height: 50,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: _categories.length,
                 itemBuilder: (context, index) {
                   final isSelected = _selectedCategoryIndex == index;
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedCategoryIndex = index;
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 12),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 10,
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 12),
+                    child: ChoiceChip(
+                      label: Text(_categories[index]),
+                      selected: isSelected,
+                      onSelected: (selected) {
+                        setState(() {
+                          _selectedCategoryIndex = index;
+                        });
+                      },
+                      backgroundColor: Colors.white,
+                      selectedColor: AppColors.splashBackground,
+                      labelStyle: TextStyle(
+                        color: isSelected ? Colors.white : Colors.black87,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? AppColors.splashBackground
-                            : Colors.transparent,
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
+                        side: BorderSide(
                           color: isSelected
                               ? AppColors.splashBackground
                               : Colors.grey[300]!,
                         ),
                       ),
-                      child: Text(
-                        _categories[index],
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : Colors.black87,
-                          fontWeight:
-                              isSelected ? FontWeight.bold : FontWeight.normal,
-                        ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
                       ),
                     ),
                   );
@@ -237,6 +251,10 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppColors.splashBackground,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
