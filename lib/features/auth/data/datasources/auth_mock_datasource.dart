@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:injectable/injectable.dart';
 import 'package:hungry_app/core/services/local_storage_service.dart';
 import 'package:hungry_app/core/utils/constants.dart';
@@ -71,7 +72,7 @@ class AuthMockDataSource implements AuthRemoteDataSource {
 
     await _storageService.saveString(
       AppConstants.keyUserData,
-      user.toJson().toString(),
+      json.encode(user.toJson()),
     );
 
     return user;
@@ -126,7 +127,7 @@ class AuthMockDataSource implements AuthRemoteDataSource {
 
     await _storageService.saveString(
       AppConstants.keyUserData,
-      user.toJson().toString(),
+      json.encode(user.toJson()),
     );
 
     return user;
