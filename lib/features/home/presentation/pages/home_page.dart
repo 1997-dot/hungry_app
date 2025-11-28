@@ -80,9 +80,12 @@ class _HomePageState extends State<HomePage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(
-                        'assets/images/backgrounds/hun.png.png',
-                        height: 40,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: Image.asset(
+                          'assets/images/backgrounds/hun.png.png',
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -354,10 +357,22 @@ class _ProductCard extends StatelessWidget {
                 color: Colors.grey[100],
               ),
               child: Center(
-                child: Image.asset(
-                  image,
-                  fit: BoxFit.contain,
-                  height: 100,
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: Image.asset(
+                    image,
+                    fit: BoxFit.contain,
+                    height: 100,
+                  ),
                 ),
               ),
             ),
