@@ -359,24 +359,29 @@ class _ProductCard extends StatelessWidget {
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
                       image,
                       fit: BoxFit.contain,
                       height: 100,
                     ),
-                    // Small shadow below the sandwich
-                    Container(
-                      width: 80,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 6,
-                            spreadRadius: -2,
-                          ),
-                        ],
+                    // Small shadow stuck to the sandwich
+                    Transform.translate(
+                      offset: const Offset(0, -15),
+                      child: Container(
+                        width: 80,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 6,
+                              spreadRadius: -1,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
