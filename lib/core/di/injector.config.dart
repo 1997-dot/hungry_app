@@ -31,7 +31,6 @@ import '../network/api_client.dart' as _i557;
 import '../network/network_info.dart' as _i932;
 import '../services/analytics_service.dart' as _i222;
 import '../services/local_storage_service.dart' as _i527;
-import '../services/navigation_service.dart' as _i31;
 import '../services/notification_service.dart' as _i941;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -49,7 +48,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => sharedPreferencesModule.sharedPreferences,
       preResolve: true,
     );
-    gh.lazySingleton<_i31.NavigationService>(() => _i31.NavigationService());
     gh.lazySingleton<_i941.NotificationService>(
       () => _i941.NotificationService(),
     );

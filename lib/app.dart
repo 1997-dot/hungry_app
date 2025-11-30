@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'core/configs/app_theme.dart';
-import 'core/configs/app_routes.dart';
-import 'core/services/navigation_service.dart';
-import 'core/di/injector.dart';
+import 'features/splash/presentation/pages/splash_page.dart';
 
-/// Main app widget with theme, routes, and BlocProviders
+/// Main app widget with theme and initial page
+///
+/// Uses pure Flutter navigation (Navigator.push/pop) instead of named routes
+/// for better type safety and cleaner code.
 class HungryApp extends StatelessWidget {
   const HungryApp({super.key});
 
@@ -15,15 +16,13 @@ class HungryApp extends StatelessWidget {
       title: 'Hungry',
       debugShowCheckedModeBanner: false,
 
-      // Theme
+      // Theme configuration
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.light,
 
-      // Navigation
-      navigatorKey: getIt<NavigationService>().navigatorKey,
-
-      // Routes - '/' route is defined in AppRoutes as splash
-      routes: AppRoutes.getRoutes(),
-      initialRoute: AppRoutes.splash,
+      // Initial page - Splash screen
+      home: const SplashPage(),
     );
   }
 }
