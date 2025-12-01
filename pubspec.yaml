@@ -104,6 +104,7 @@ flutter:
     - assets/images/backgrounds/
     - assets/images/products/
     - assets/images/toppings/
+    - assets/images/sides/
     - assets/images/placeholders/
     - assets/images/illustrations/
 
