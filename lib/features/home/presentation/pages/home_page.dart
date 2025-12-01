@@ -6,6 +6,7 @@ import '../../../../core/configs/app_constants.dart';
 import '../../../../core/di/injector.dart';
 import '../../../../core/services/local_storage_service.dart';
 import '../../../auth/presentation/pages/login_page.dart';
+import '../../../product/presentation/pages/product_details_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,24 +24,28 @@ class _HomePageState extends State<HomePage> {
 
   final List<Map<String, dynamic>> _products = [
     {
+      'id': 'product_1',
       'image': 'assets/images/products/1.png',
       'name': 'Cheeseburger',
       'description': "Wendy's Burger",
       'rating': 4.9,
     },
     {
+      'id': 'product_2',
       'image': 'assets/images/products/2.png',
       'name': 'Hamburger',
       'description': 'Veggie Burger',
       'rating': 4.8,
     },
     {
+      'id': 'product_3',
       'image': 'assets/images/products/3.png',
       'name': 'Hamburger',
       'description': 'Chicken Burger',
       'rating': 4.6,
     },
     {
+      'id': 'product_4',
       'image': 'assets/images/products/4.png',
       'name': 'Hamburger',
       'description': 'Fried Chicken Burger',
@@ -241,6 +246,7 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   final product = _products[index];
                   return _ProductCard(
+                    productId: product['id'],
                     image: product['image'],
                     name: product['name'],
                     description: product['description'],
@@ -320,12 +326,14 @@ class _HomePageState extends State<HomePage> {
 }
 
 class _ProductCard extends StatelessWidget {
+  final String productId;
   final String image;
   final String name;
   final String description;
   final double rating;
 
   const _ProductCard({
+    required this.productId,
     required this.image,
     required this.name,
     required this.description,
@@ -334,7 +342,16 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ProductDetailsPage(productId: productId),
+          ),
+        );
+      },
+      child: Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -449,6 +466,7 @@ class _ProductCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

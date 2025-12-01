@@ -58,12 +58,46 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
   // Mock data methods
   ProductModel _getMockProduct(String productId) {
+    // Map of product data based on productId
+    final productData = {
+      'product_1': {
+        'name': 'Cheeseburger',
+        'description': "Wendy's Burger",
+        'image': 'assets/images/products/1.png',
+        'price': 8.99,
+        'rating': 4.9,
+      },
+      'product_2': {
+        'name': 'Hamburger',
+        'description': 'Veggie Burger',
+        'image': 'assets/images/products/2.png',
+        'price': 7.99,
+        'rating': 4.8,
+      },
+      'product_3': {
+        'name': 'Hamburger',
+        'description': 'Chicken Burger',
+        'image': 'assets/images/products/3.png',
+        'price': 9.49,
+        'rating': 4.6,
+      },
+      'product_4': {
+        'name': 'Hamburger',
+        'description': 'Fried Chicken Burger',
+        'image': 'assets/images/products/4.png',
+        'price': 10.99,
+        'rating': 4.5,
+      },
+    };
+
+    final data = productData[productId] ?? productData['product_1']!;
+
     return ProductModel(
       id: productId,
-      name: 'Hamburger',
-      description: 'Veggie Burger',
-      basePrice: 8.19,
-      imageUrl: 'https://example.com/burger.png',
+      name: data['name'] as String,
+      description: data['description'] as String,
+      basePrice: data['price'] as double,
+      imageUrl: data['image'] as String,
       category: 'Burgers',
       availableToppings: [
         const ToppingModel(
@@ -118,7 +152,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
         ),
       ],
       spicyLevel: 0.3,
-      rating: 4.5,
+      rating: data['rating'] as double,
       reviewCount: 120,
     );
   }

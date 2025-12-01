@@ -90,7 +90,7 @@ class _ProductDetailsView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Product image placeholder
+                        // Product image
                         Center(
                           child: Container(
                             width: 200,
@@ -99,10 +99,30 @@ class _ProductDetailsView extends StatelessWidget {
                               color: AppColors.primary.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
-                            child: Icon(
-                              Icons.fastfood,
-                              size: 100,
-                              color: AppColors.primary,
+                            child: ClipOval(
+                              child: product.imageUrl.startsWith('assets/')
+                                  ? Image.asset(
+                                      product.imageUrl,
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Icon(
+                                          Icons.fastfood,
+                                          size: 100,
+                                          color: AppColors.primary,
+                                        );
+                                      },
+                                    )
+                                  : Image.network(
+                                      product.imageUrl,
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Icon(
+                                          Icons.fastfood,
+                                          size: 100,
+                                          color: AppColors.primary,
+                                        );
+                                      },
+                                    ),
                             ),
                           ),
                         ),
