@@ -155,7 +155,10 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.factory<_i1008.ProductBloc>(
-      () => _i1008.ProductBloc(gh<_i133.GetProductDetailsUseCase>()),
+      () => _i1008.ProductBloc(
+        gh<_i133.GetProductDetailsUseCase>(),
+        gh<_i659.AddToCartUseCase>(),
+      ),
     );
     return this;
   }

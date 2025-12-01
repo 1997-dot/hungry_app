@@ -5,10 +5,6 @@ import '../../../../core/configs/app_colors.dart';
 import '../../../../core/configs/app_fonts.dart';
 import '../../../../core/di/injector.dart';
 import '../../../../core/widgets/app_snackbar.dart';
-import '../../../cart/domain/entities/cart_item_entity.dart';
-import '../../../cart/presentation/blocs/cart_bloc.dart';
-import '../../../cart/presentation/blocs/cart_event.dart';
-import '../../../cart/presentation/blocs/cart_state.dart';
 import '../blocs/product_bloc.dart';
 import '../blocs/product_event.dart';
 import '../blocs/product_state.dart';
@@ -25,25 +21,18 @@ class ProductDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => getIt<ProductBloc>()
-            ..add(LoadProductDetailsEvent(productId)),
-        ),
-        BlocProvider(
-          create: (_) => getIt<CartBloc>(),
-        ),
-      ],
-      child: BlocListener<CartBloc, CartState>(
+    return BlocProvider(
+      create: (_) => getIt<ProductBloc>()
+        ..add(LoadProductDetailsEvent(productId)),
+      child: BlocListener<ProductBloc, ProductState>(
         listener: (context, state) {
-          if (state is CartItemAdded) {
+          if (state is ProductAddedToCart) {
             AppSnackbar.success(
               context: context,
               message: 'Added to cart!',
             );
             Navigator.pop(context);
-          } else if (state is CartError) {
+          } else if (state is ProductError) {
             AppSnackbar.error(
               context: context,
               message: state.message,
@@ -263,21 +252,9 @@ class _ProductDetailsView extends StatelessWidget {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            final cartItem = CartItemEntity(
-                              id: DateTime.now().millisecondsSinceEpoch.toString(),
-                              product: product,
-                              quantity: 1,
-                              selectedToppings: product.availableToppings
-                                  .where((t) => t.isSelected)
-                                  .toList(),
-                              selectedSideOptions: product.availableSideOptions
-                                  .where((s) => s.isSelected)
-                                  .toList(),
-                              spicyLevel: state.currentSpicyLevel,
-                              addedAt: DateTime.now(),
-                            );
-
-                            context.read<CartBloc>().add(AddToCartEvent(cartItem));
+                            context.read<ProductBloc>().add(
+                                  const AddProductToCartEvent(),
+                                );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,

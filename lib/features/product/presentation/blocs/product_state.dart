@@ -49,3 +49,8 @@ class ProductError extends ProductState {
   @override
   List<Object?> get props => [message];
 }
+
+/// Product added to cart successfully
+class ProductAddedToCart extends ProductState {
+  const ProductAddedToCart();
+}

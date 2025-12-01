@@ -46,3 +46,8 @@ class UpdateSpicyLevelEvent extends ProductEvent {
   @override
   List<Object?> get props => [spicyLevel];
 }
+
+/// Event to add product to cart
+class AddProductToCartEvent extends ProductEvent {
+  const AddProductToCartEvent();
+}
