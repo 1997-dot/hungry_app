@@ -6,21 +6,41 @@ import 'side_option_model.dart';
 
 part 'product_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ProductModel extends ProductEntity {
+  @override
+  @JsonKey(name: 'available_toppings')
+  final List<ToppingModel> availableToppings;
+
+  @override
+  @JsonKey(name: 'available_side_options')
+  final List<SideOptionModel> availableSideOptions;
+
   const ProductModel({
-    required super.id,
-    required super.name,
-    required super.description,
-    required super.basePrice,
-    required super.imageUrl,
-    required super.category,
-    super.availableToppings = const [],
-    super.availableSideOptions = const [],
-    super.spicyLevel = 0.0,
-    super.rating = 0.0,
-    super.reviewCount = 0,
-  });
+    required String id,
+    required String name,
+    required String description,
+    required double basePrice,
+    required String imageUrl,
+    required String category,
+    this.availableToppings = const [],
+    this.availableSideOptions = const [],
+    double spicyLevel = 0.0,
+    double rating = 0.0,
+    int reviewCount = 0,
+  }) : super(
+          id: id,
+          name: name,
+          description: description,
+          basePrice: basePrice,
+          imageUrl: imageUrl,
+          category: category,
+          availableToppings: availableToppings,
+          availableSideOptions: availableSideOptions,
+          spicyLevel: spicyLevel,
+          rating: rating,
+          reviewCount: reviewCount,
+        );
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
       _$ProductModelFromJson(json);
@@ -35,8 +55,12 @@ class ProductModel extends ProductEntity {
       basePrice: entity.basePrice,
       imageUrl: entity.imageUrl,
       category: entity.category,
-      availableToppings: entity.availableToppings,
-      availableSideOptions: entity.availableSideOptions,
+      availableToppings: entity.availableToppings
+          .map((t) => ToppingModel.fromEntity(t))
+          .toList(),
+      availableSideOptions: entity.availableSideOptions
+          .map((s) => SideOptionModel.fromEntity(s))
+          .toList(),
       spicyLevel: entity.spicyLevel,
       rating: entity.rating,
       reviewCount: entity.reviewCount,
