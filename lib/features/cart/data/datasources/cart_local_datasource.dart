@@ -19,8 +19,27 @@ abstract class CartLocalDataSource {
 @LazySingleton(as: CartLocalDataSource)
 class CartLocalDataSourceImpl implements CartLocalDataSource {
   final LocalStorageService _localStorageService;
+  static const int _currentDataVersion = 2; // Version 2: includes thumbnailUrl in ProductEntity
+  static const String _versionKey = 'cart_data_version';
 
-  CartLocalDataSourceImpl(this._localStorageService);
+  CartLocalDataSourceImpl(this._localStorageService) {
+    _clearIfNeeded();
+  }
+
+  /// Clear cart data if it's from an older, incompatible version
+  Future<void> _clearIfNeeded() async {
+    try {
+      final version = _localStorageService.getInt(_versionKey) ?? 0;
+      if (version < _currentDataVersion) {
+        await _localStorageService.remove(AppConstants.keyCartData);
+        await _localStorageService.saveInt(_versionKey, _currentDataVersion);
+      }
+    } catch (e) {
+      // If anything goes wrong, clear cart data to be safe
+      await _localStorageService.remove(AppConstants.keyCartData);
+      await _localStorageService.saveInt(_versionKey, _currentDataVersion);
+    }
+  }
 
   @override
   Future<List<CartItemModel>> getCartItems() async {
