@@ -32,7 +32,7 @@ class ToppingOptionWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Placeholder for topping image
+            // Topping image
             Container(
               width: 48,
               height: 48,
@@ -40,10 +40,30 @@ class ToppingOptionWidget extends StatelessWidget {
                 color: AppColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.restaurant,
-                color: AppColors.primary,
-                size: 24,
+              child: ClipOval(
+                child: topping.imageUrl.startsWith('assets/')
+                    ? Image.asset(
+                        topping.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.restaurant,
+                            color: AppColors.primary,
+                            size: 24,
+                          );
+                        },
+                      )
+                    : Image.network(
+                        topping.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.restaurant,
+                            color: AppColors.primary,
+                            size: 24,
+                          );
+                        },
+                      ),
               ),
             ),
             const SizedBox(height: 8),

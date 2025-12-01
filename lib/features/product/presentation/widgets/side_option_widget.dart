@@ -32,7 +32,7 @@ class SideOptionWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Placeholder for side option image
+            // Side option image
             Container(
               width: 48,
               height: 48,
@@ -40,10 +40,30 @@ class SideOptionWidget extends StatelessWidget {
                 color: AppColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.fastfood,
-                color: AppColors.primary,
-                size: 24,
+              child: ClipOval(
+                child: sideOption.imageUrl.startsWith('assets/')
+                    ? Image.asset(
+                        sideOption.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.fastfood,
+                            color: AppColors.primary,
+                            size: 24,
+                          );
+                        },
+                      )
+                    : Image.network(
+                        sideOption.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.fastfood,
+                            color: AppColors.primary,
+                            size: 24,
+                          );
+                        },
+                      ),
               ),
             ),
             const SizedBox(height: 8),
