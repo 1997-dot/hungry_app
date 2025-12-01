@@ -9,7 +9,8 @@ class ProductEntity extends Equatable {
   final String name;
   final String description;
   final double basePrice;
-  final String imageUrl;
+  final String imageUrl; // Large detail image
+  final String thumbnailUrl; // Small thumbnail image for cart/list
   final String category;
   final List<ToppingEntity> availableToppings;
   final List<SideOptionEntity> availableSideOptions;
@@ -23,6 +24,7 @@ class ProductEntity extends Equatable {
     required this.description,
     required this.basePrice,
     required this.imageUrl,
+    required this.thumbnailUrl,
     required this.category,
     this.availableToppings = const [],
     this.availableSideOptions = const [],
@@ -58,6 +60,7 @@ class ProductEntity extends Equatable {
     String? description,
     double? basePrice,
     String? imageUrl,
+    String? thumbnailUrl,
     String? category,
     List<ToppingEntity>? availableToppings,
     List<SideOptionEntity>? availableSideOptions,
@@ -71,6 +74,7 @@ class ProductEntity extends Equatable {
       description: description ?? this.description,
       basePrice: basePrice ?? this.basePrice,
       imageUrl: imageUrl ?? this.imageUrl,
+      thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       category: category ?? this.category,
       availableToppings: availableToppings ?? this.availableToppings,
       availableSideOptions: availableSideOptions ?? this.availableSideOptions,
@@ -87,6 +91,7 @@ class ProductEntity extends Equatable {
         description,
         basePrice,
         imageUrl,
+        thumbnailUrl,
         category,
         availableToppings,
         availableSideOptions,

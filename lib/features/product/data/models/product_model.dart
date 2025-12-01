@@ -22,6 +22,7 @@ class ProductModel extends ProductEntity {
     required String description,
     required double basePrice,
     required String imageUrl,
+    required String thumbnailUrl,
     required String category,
     this.availableToppings = const [],
     this.availableSideOptions = const [],
@@ -34,6 +35,7 @@ class ProductModel extends ProductEntity {
           description: description,
           basePrice: basePrice,
           imageUrl: imageUrl,
+          thumbnailUrl: thumbnailUrl,
           category: category,
           availableToppings: availableToppings,
           availableSideOptions: availableSideOptions,
@@ -54,6 +56,7 @@ class ProductModel extends ProductEntity {
       description: entity.description,
       basePrice: entity.basePrice,
       imageUrl: entity.imageUrl,
+      thumbnailUrl: entity.thumbnailUrl,
       category: entity.category,
       availableToppings: entity.availableToppings
           .map((t) => ToppingModel.fromEntity(t))

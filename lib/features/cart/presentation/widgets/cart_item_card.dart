@@ -42,9 +42,9 @@ class CartItemCard extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: item.product.imageUrl.startsWith('assets/')
+                child: item.product.thumbnailUrl.startsWith('assets/')
                     ? Image.asset(
-                        item.product.imageUrl,
+                        item.product.thumbnailUrl,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Icon(
@@ -55,7 +55,7 @@ class CartItemCard extends StatelessWidget {
                         },
                       )
                     : Image.network(
-                        item.product.imageUrl,
+                        item.product.thumbnailUrl,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Icon(
