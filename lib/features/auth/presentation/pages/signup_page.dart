@@ -379,7 +379,7 @@ class _SignupPageState extends State<SignupPage> {
                               : () => _handleSignup(context),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.textDark,
+                            foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -390,7 +390,7 @@ class _SignupPageState extends State<SignupPage> {
                                   height: 24,
                                   width: 24,
                                   child: CircularProgressIndicator(
-                                    color: AppColors.textDark,
+                                    color: Colors.white,
                                     strokeWidth: 2,
                                   ),
                                 )

@@ -217,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
                                 : () => _handleLogin(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
-                              foregroundColor: AppColors.textDark,
+                              foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -228,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                                     height: 24,
                                     width: 24,
                                     child: CircularProgressIndicator(
-                                      color: AppColors.textDark,
+                                      color: Colors.white,
                                       strokeWidth: 2,
                                     ),
                                   )
