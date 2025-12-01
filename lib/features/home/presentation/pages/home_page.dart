@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:hungry_app/core/configs/app_colors.dart';
-import 'package:hungry_app/core/configs/app_routes.dart';
-import 'package:hungry_app/core/services/local_storage_service.dart';
-import 'package:hungry_app/core/di/injector.dart';
 import 'dart:convert';
+import 'package:flutter/material.dart';
+
+import '../../../../core/configs/app_colors.dart';
+import '../../../../core/configs/app_constants.dart';
+import '../../../../core/di/injector.dart';
+import '../../../../core/services/local_storage_service.dart';
+import '../../../auth/presentation/pages/login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -120,13 +122,13 @@ class _HomePageState extends State<HomePage> {
                       GestureDetector(
                         onTap: () async {
                           final storage = getIt<LocalStorageService>();
-                          await storage.remove('auth_token');
-                          await storage.remove('is_logged_in');
-                          await storage.remove('user_data');
+                          await storage.remove(AppConstants.keyAuthToken);
+                          await storage.remove(AppConstants.keyIsLoggedIn);
+                          await storage.remove(AppConstants.keyUserData);
                           if (context.mounted) {
-                            Navigator.pushReplacementNamed(
+                            Navigator.pushReplacement(
                               context,
-                              AppRoutes.login,
+                              MaterialPageRoute(builder: (_) => const LoginPage()),
                             );
                           }
                         },

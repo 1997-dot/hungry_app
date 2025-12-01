@@ -4,13 +4,15 @@ import 'package:injectable/injectable.dart';
 
 import '../configs/app_constants.dart';
 import 'api_endpoints.dart';
+import 'auth_interceptor.dart';
 
 /// API Client for making HTTP requests
 @lazySingleton
 class ApiClient {
   late final Dio _dio;
+  final AuthInterceptor _authInterceptor;
 
-  ApiClient() {
+  ApiClient(this._authInterceptor) {
     _dio = Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.baseUrl,
@@ -24,8 +26,11 @@ class ApiClient {
       ),
     );
 
-    _dio.interceptors.addAll([
-      // Pretty logger for debugging (only in debug mode)
+    // Add auth interceptor
+    _dio.interceptors.add(_authInterceptor);
+
+    // Add pretty logger for debugging (only in debug mode)
+    _dio.interceptors.add(
       PrettyDioLogger(
         requestHeader: true,
         requestBody: true,
@@ -35,9 +40,9 @@ class ApiClient {
         compact: true,
         maxWidth: 90,
       ),
-      // TODO: Add auth interceptor for adding token to requests
-      // TODO: Add retry interceptor for failed requests
-    ]);
+    );
+
+    // TODO: Add retry interceptor for failed requests
   }
 
   /// GET request

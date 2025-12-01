@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hungry_app/core/configs/app_colors.dart';
-import 'package:hungry_app/core/configs/app_routes.dart';
-import 'package:hungry_app/core/di/injector.dart';
-import 'package:hungry_app/features/auth/presentation/blocs/auth_bloc.dart';
-import 'package:hungry_app/features/auth/presentation/blocs/auth_event.dart';
-import 'package:hungry_app/features/auth/presentation/blocs/auth_state.dart';
+
+import '../../../../core/configs/app_colors.dart';
+import '../../../../core/di/injector.dart';
+import '../../../../core/widgets/app_snackbar.dart';
+import '../../../home/presentation/pages/home_page.dart';
+import '../blocs/auth_bloc.dart';
+import '../blocs/auth_event.dart';
+import '../blocs/auth_state.dart';
+import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -48,13 +51,14 @@ class _LoginPageState extends State<LoginPage> {
           body: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is AuthAuthenticated) {
-                Navigator.pushReplacementNamed(context, AppRoutes.home);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const HomePage()),
+                );
               } else if (state is AuthError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: Colors.red,
-                  ),
+                AppSnackbar.error(
+                  context: context,
+                  message: state.message,
                 );
               }
             },
@@ -243,7 +247,12 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: state is AuthLoading
                               ? null
                               : () {
-                                  Navigator.pushNamed(context, AppRoutes.signup);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const SignupPage(),
+                                    ),
+                                  );
                                 },
                           style: TextButton.styleFrom(
                             foregroundColor: AppColors.textLight,

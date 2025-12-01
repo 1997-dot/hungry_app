@@ -11,7 +11,6 @@ A food ordering Flutter application built with **Clean Architecture** principles
 - **Dependency Injection:** get_it, injectable
 - **Networking:** Dio
 - **Local Storage:** SharedPreferences
-- **Routing:** Custom AppRoutes with NavigationService
 
 ---
 

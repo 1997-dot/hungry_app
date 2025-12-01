@@ -5,14 +5,14 @@ import '../../../../core/error/failure.dart';
 import '../entities/cart_item_entity.dart';
 import '../repositories/cart_repository.dart';
 
-/// Use case for adding item to cart
+/// Use case for getting cart items
 @injectable
-class AddToCartUseCase {
+class GetCartItemsUseCase {
   final CartRepository _repository;
 
-  AddToCartUseCase(this._repository);
+  GetCartItemsUseCase(this._repository);
 
-  Future<Either<Failure, void>> call(CartItemEntity item) {
-    return _repository.addToCart(item);
+  Future<Either<Failure, List<CartItemEntity>>> call() {
+    return _repository.getCartItems();
   }
 }

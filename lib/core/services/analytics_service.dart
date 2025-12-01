@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 /// Interface for analytics tracking
@@ -13,24 +14,24 @@ abstract class AnalyticsService {
 class ConsoleAnalyticsService implements AnalyticsService {
   @override
   void logEvent(String eventName, {Map<String, dynamic>? parameters}) {
-    print('[Analytics] Event: $eventName');
+    debugPrint('[Analytics] Event: $eventName');
     if (parameters != null && parameters.isNotEmpty) {
-      print('[Analytics]   Parameters: $parameters');
+      debugPrint('[Analytics]   Parameters: $parameters');
     }
   }
 
   @override
   void logScreenView(String screenName) {
-    print('[Analytics] Screen View: $screenName');
+    debugPrint('[Analytics] Screen View: $screenName');
   }
 
   @override
   void setUserId(String userId) {
-    print('[Analytics] User ID Set: $userId');
+    debugPrint('[Analytics] User ID Set: $userId');
   }
 
   @override
   void setUserProperty(String name, String value) {
-    print('[Analytics] User Property: $name = $value');
+    debugPrint('[Analytics] User Property: $name = $value');
   }
 }

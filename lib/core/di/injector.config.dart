@@ -28,6 +28,7 @@ import '../../features/auth/presentation/blocs/auth_bloc.dart' as _i85;
 import '../../features/splash/domain/usecases/check_auth_usecase.dart' as _i77;
 import '../../features/splash/presentation/blocs/splash_bloc.dart' as _i145;
 import '../network/api_client.dart' as _i557;
+import '../network/auth_interceptor.dart' as _i908;
 import '../network/network_info.dart' as _i932;
 import '../services/analytics_service.dart' as _i222;
 import '../services/local_storage_service.dart' as _i527;
@@ -42,7 +43,6 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final connectivityModule = _$ConnectivityModule();
     final sharedPreferencesModule = _$SharedPreferencesModule();
-    gh.lazySingleton<_i557.ApiClient>(() => _i557.ApiClient());
     gh.lazySingleton<_i895.Connectivity>(() => connectivityModule.connectivity);
     await gh.lazySingletonAsync<_i460.SharedPreferences>(
       () => sharedPreferencesModule.sharedPreferences,
@@ -54,8 +54,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i527.LocalStorageService>(
       () => _i527.LocalStorageService(gh<_i460.SharedPreferences>()),
     );
+    gh.factory<_i908.AuthInterceptor>(
+      () => _i908.AuthInterceptor(gh<_i527.LocalStorageService>()),
+    );
     gh.lazySingleton<_i222.AnalyticsService>(
       () => _i222.ConsoleAnalyticsService(),
+    );
+    gh.lazySingleton<_i557.ApiClient>(
+      () => _i557.ApiClient(gh<_i908.AuthInterceptor>()),
     );
     gh.factory<_i77.CheckAuthUseCase>(
       () => _i77.CheckAuthUseCase(gh<_i527.LocalStorageService>()),
