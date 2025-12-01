@@ -90,16 +90,14 @@ class _ProductDetailsView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Product image
-                        Center(
-                          child: Container(
-                            width: 200,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withValues(alpha: 0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipOval(
+                        // Product image and customization text
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Product image on the left
+                            SizedBox(
+                              width: 150,
+                              height: 150,
                               child: product.imageUrl.startsWith('assets/')
                                   ? Image.asset(
                                       product.imageUrl,
@@ -107,7 +105,7 @@ class _ProductDetailsView extends StatelessWidget {
                                       errorBuilder: (context, error, stackTrace) {
                                         return Icon(
                                           Icons.fastfood,
-                                          size: 100,
+                                          size: 80,
                                           color: AppColors.primary,
                                         );
                                       },
@@ -118,29 +116,44 @@ class _ProductDetailsView extends StatelessWidget {
                                       errorBuilder: (context, error, stackTrace) {
                                         return Icon(
                                           Icons.fastfood,
-                                          size: 100,
+                                          size: 80,
                                           color: AppColors.primary,
                                         );
                                       },
                                     ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-
-                        Text(
-                          product.name,
-                          style: AppTextStyles.h4.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textDark,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          product.description,
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                            const SizedBox(width: 16),
+                            // Customization text on the right
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product.name,
+                                    style: AppTextStyles.h5.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.textDark,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    product.description,
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    'Customize your sandwich as you like',
+                                    style: AppTextStyles.bodyMedium.copyWith(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 24),
 
