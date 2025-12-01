@@ -32,7 +32,7 @@ class CartItemCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product image placeholder
+            // Product image
             Container(
               width: 80,
               height: 80,
@@ -40,10 +40,31 @@ class CartItemCard extends StatelessWidget {
                 color: AppColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(
-                Icons.fastfood,
-                color: AppColors.primary,
-                size: 40,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: item.product.imageUrl.startsWith('assets/')
+                    ? Image.asset(
+                        item.product.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.fastfood,
+                            color: AppColors.primary,
+                            size: 40,
+                          );
+                        },
+                      )
+                    : Image.network(
+                        item.product.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.fastfood,
+                            color: AppColors.primary,
+                            size: 40,
+                          );
+                        },
+                      ),
               ),
             ),
             const SizedBox(width: 12),
