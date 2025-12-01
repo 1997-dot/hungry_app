@@ -22,7 +22,7 @@ class ToppingOptionWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: topping.isSelected
               ? AppColors.primary.withValues(alpha: 0.2)
-              : AppColors.surface,
+              : AppColors.background,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: topping.isSelected ? AppColors.primary : AppColors.border,

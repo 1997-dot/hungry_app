@@ -22,7 +22,7 @@ class SideOptionWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: sideOption.isSelected
               ? AppColors.primary.withValues(alpha: 0.2)
-              : AppColors.surface,
+              : AppColors.background,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: sideOption.isSelected ? AppColors.primary : AppColors.border,

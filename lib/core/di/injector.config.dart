@@ -37,6 +37,7 @@ import '../../features/cart/domain/usecases/remove_from_cart_usecase.dart'
     as _i355;
 import '../../features/cart/domain/usecases/update_cart_item_usecase.dart'
     as _i495;
+import '../../features/cart/presentation/blocs/cart_bloc.dart' as _i98;
 import '../../features/product/data/datasources/product_remote_datasource.dart'
     as _i963;
 import '../../features/product/data/repositories/product_repository_impl.dart'
@@ -45,6 +46,7 @@ import '../../features/product/domain/repositories/product_repository.dart'
     as _i39;
 import '../../features/product/domain/usecases/get_product_details_usecase.dart'
     as _i133;
+import '../../features/product/presentation/blocs/product_bloc.dart' as _i1008;
 import '../../features/splash/domain/usecases/check_auth_usecase.dart' as _i77;
 import '../../features/splash/presentation/blocs/splash_bloc.dart' as _i145;
 import '../network/api_client.dart' as _i557;
@@ -110,6 +112,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i932.NetworkInfo>(
       () => _i932.NetworkInfoImpl(gh<_i895.Connectivity>()),
     );
+    gh.factory<_i98.CartBloc>(
+      () => _i98.CartBloc(
+        gh<_i342.GetCartItemsUseCase>(),
+        gh<_i659.AddToCartUseCase>(),
+        gh<_i495.UpdateCartItemUseCase>(),
+        gh<_i355.RemoveFromCartUseCase>(),
+      ),
+    );
     gh.factory<_i161.AuthRemoteDataSource>(
       () => _i306.AuthMockDataSource(gh<_i527.LocalStorageService>()),
     );
@@ -143,6 +153,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i57.SignupUseCase>(),
         gh<_i48.LogoutUseCase>(),
       ),
+    );
+    gh.factory<_i1008.ProductBloc>(
+      () => _i1008.ProductBloc(gh<_i133.GetProductDetailsUseCase>()),
     );
     return this;
   }
