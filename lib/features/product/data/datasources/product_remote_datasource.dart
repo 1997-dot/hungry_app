@@ -164,9 +164,9 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
   List<ProductModel> _getMockProducts() {
     return [
-      _getMockProduct('1'),
-      _getMockProduct('2'),
-      _getMockProduct('3'),
+      _getMockProduct('product_1'),
+      _getMockProduct('product_2'),
+      _getMockProduct('product_3'),
     ];
   }
 }
