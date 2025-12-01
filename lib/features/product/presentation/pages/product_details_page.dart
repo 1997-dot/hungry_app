@@ -301,6 +301,7 @@ class _ProductDetailsView extends StatelessWidget {
                             'Add To Cart',
                             style: AppTextStyles.bodyLarge.copyWith(
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),

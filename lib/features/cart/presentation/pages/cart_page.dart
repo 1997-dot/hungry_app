@@ -178,6 +178,7 @@ class _CartView extends StatelessWidget {
                             'Checkout',
                             style: AppTextStyles.bodyLarge.copyWith(
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
