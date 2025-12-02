@@ -38,6 +38,19 @@ import '../../features/cart/domain/usecases/remove_from_cart_usecase.dart'
 import '../../features/cart/domain/usecases/update_cart_item_usecase.dart'
     as _i495;
 import '../../features/cart/presentation/blocs/cart_bloc.dart' as _i98;
+import '../../features/checkout/data/datasources/checkout_local_datasource.dart'
+    as _i25;
+import '../../features/checkout/data/datasources/checkout_remote_datasource.dart'
+    as _i26;
+import '../../features/checkout/data/repositories/checkout_repository_impl.dart'
+    as _i949;
+import '../../features/checkout/domain/repositories/checkout_repository.dart'
+    as _i498;
+import '../../features/checkout/domain/usecases/create_order_summary_usecase.dart'
+    as _i238;
+import '../../features/checkout/domain/usecases/process_payment_usecase.dart'
+    as _i117;
+import '../../features/checkout/presentation/blocs/checkout_bloc.dart' as _i881;
 import '../../features/product/data/datasources/product_remote_datasource.dart'
     as _i963;
 import '../../features/product/data/repositories/product_repository_impl.dart'
@@ -91,6 +104,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i557.ApiClient>(
       () => _i557.ApiClient(gh<_i908.AuthInterceptor>()),
     );
+    gh.factory<_i25.CheckoutLocalDataSource>(
+      () => _i25.CheckoutLocalDataSourceImpl(gh<_i527.LocalStorageService>()),
+    );
     gh.factory<_i77.CheckAuthUseCase>(
       () => _i77.CheckAuthUseCase(gh<_i527.LocalStorageService>()),
     );
@@ -129,6 +145,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i932.NetworkInfo>(),
       ),
     );
+    gh.factory<_i26.CheckoutRemoteDataSource>(
+      () => _i26.CheckoutRemoteDataSourceImpl(gh<_i342.GetCartItemsUseCase>()),
+    );
     gh.lazySingleton<_i963.ProductRemoteDataSource>(
       () => _i963.ProductRemoteDataSourceImpl(gh<_i557.ApiClient>()),
     );
@@ -154,10 +173,28 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i48.LogoutUseCase>(),
       ),
     );
+    gh.factory<_i498.CheckoutRepository>(
+      () => _i949.CheckoutRepositoryImpl(
+        remoteDataSource: gh<_i26.CheckoutRemoteDataSource>(),
+        localDataSource: gh<_i25.CheckoutLocalDataSource>(),
+      ),
+    );
     gh.factory<_i1008.ProductBloc>(
       () => _i1008.ProductBloc(
         gh<_i133.GetProductDetailsUseCase>(),
         gh<_i659.AddToCartUseCase>(),
+      ),
+    );
+    gh.factory<_i238.CreateOrderSummaryUseCase>(
+      () => _i238.CreateOrderSummaryUseCase(gh<_i498.CheckoutRepository>()),
+    );
+    gh.factory<_i117.ProcessPaymentUseCase>(
+      () => _i117.ProcessPaymentUseCase(gh<_i498.CheckoutRepository>()),
+    );
+    gh.factory<_i881.CheckoutBloc>(
+      () => _i881.CheckoutBloc(
+        createOrderSummaryUseCase: gh<_i238.CreateOrderSummaryUseCase>(),
+        processPaymentUseCase: gh<_i117.ProcessPaymentUseCase>(),
       ),
     );
     return this;

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/configs/app_colors.dart';
 import '../../../../core/configs/app_fonts.dart';
 import '../../../../core/di/injector.dart';
+import '../../../checkout/presentation/pages/checkout_page.dart';
 import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 import '../blocs/cart_state.dart';
@@ -160,9 +161,10 @@ class _CartView extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Checkout feature coming soon!'),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const CheckoutPage(),
                               ),
                             );
                           },

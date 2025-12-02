@@ -6,6 +6,7 @@ import '../../../../core/configs/app_constants.dart';
 import '../../../../core/di/injector.dart';
 import '../../../../core/services/local_storage_service.dart';
 import '../../../auth/presentation/pages/login_page.dart';
+import '../../../cart/presentation/pages/cart_page.dart';
 import '../../../product/presentation/pages/product_details_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -293,9 +294,12 @@ class _HomePageState extends State<HomePage> {
                   icon: Icons.shopping_cart,
                   isSelected: _selectedBottomNavIndex == 1,
                   onTap: () {
-                    setState(() {
-                      _selectedBottomNavIndex = 1;
-                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const CartPage(),
+                      ),
+                    );
                   },
                 ),
                 _BottomNavItem(
