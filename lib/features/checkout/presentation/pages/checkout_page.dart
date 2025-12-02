@@ -98,17 +98,38 @@ class _CheckoutViewState extends State<_CheckoutView> {
             );
           }
 
-          if (state is CheckoutLoaded || state is CheckoutProcessing) {
-            final isProcessing = state is CheckoutProcessing;
-            final loadedState = state is CheckoutLoaded ? state : null;
+          if (state is CheckoutProcessing) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(
+                    color: AppColors.primary,
+                    strokeWidth: 3,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Processing Payment...',
+                    style: AppTextStyles.h6.copyWith(
+                      color: AppColors.textDark,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Please wait while we process your payment',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          }
 
-            if (loadedState == null) {
-              return const Center(
-                child: Text('Unable to load order summary'),
-              );
-            }
-
-            return _buildCheckoutContent(context, loadedState, isProcessing);
+          if (state is CheckoutLoaded) {
+            return _buildCheckoutContent(context, state, false);
           }
 
           return const SizedBox.shrink();
