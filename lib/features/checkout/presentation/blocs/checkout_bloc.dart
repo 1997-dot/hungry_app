@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../cart/domain/usecases/clear_cart_usecase.dart';
 import '../../domain/entities/payment_method_entity.dart';
 import '../../domain/usecases/create_order_summary_usecase.dart';
 import '../../domain/usecases/process_payment_usecase.dart';
@@ -11,12 +12,15 @@ import 'checkout_state.dart';
 class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   final CreateOrderSummaryUseCase _createOrderSummaryUseCase;
   final ProcessPaymentUseCase _processPaymentUseCase;
+  final ClearCartUseCase _clearCartUseCase;
 
   CheckoutBloc({
     required CreateOrderSummaryUseCase createOrderSummaryUseCase,
     required ProcessPaymentUseCase processPaymentUseCase,
+    required ClearCartUseCase clearCartUseCase,
   })  : _createOrderSummaryUseCase = createOrderSummaryUseCase,
         _processPaymentUseCase = processPaymentUseCase,
+        _clearCartUseCase = clearCartUseCase,
         super(const CheckoutInitial()) {
     on<LoadOrderSummaryEvent>(_onLoadOrderSummary);
     on<SelectPaymentMethodEvent>(_onSelectPaymentMethod);
@@ -135,7 +139,11 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         emit(CheckoutError(failure.message));
         emit(currentState);
       },
-      (order) => emit(CheckoutSuccess(order)),
+      (order) async {
+        // Clear the cart after successful payment
+        await _clearCartUseCase();
+        emit(CheckoutSuccess(order));
+      },
     );
   }
 }

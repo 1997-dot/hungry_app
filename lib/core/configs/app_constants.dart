@@ -19,6 +19,7 @@ class AppConstants {
   static const String keyIsLoggedIn = 'is_logged_in';
   static const String keyCartData = 'cart_data';
   static const String keyFavoritesData = 'favorites_data';
+  static const String keyOrderHistory = 'order_history';
   static const String keyLastSyncTime = 'last_sync_time';
   static const String keyThemeMode = 'theme_mode';
   static const String keyLanguage = 'language';

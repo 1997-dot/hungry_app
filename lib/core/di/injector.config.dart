@@ -31,6 +31,7 @@ import '../../features/cart/data/repositories/cart_repository_impl.dart'
     as _i642;
 import '../../features/cart/domain/repositories/cart_repository.dart' as _i322;
 import '../../features/cart/domain/usecases/add_to_cart_usecase.dart' as _i659;
+import '../../features/cart/domain/usecases/clear_cart_usecase.dart' as _i240;
 import '../../features/cart/domain/usecases/get_cart_items_usecase.dart'
     as _i342;
 import '../../features/cart/domain/usecases/remove_from_cart_usecase.dart'
@@ -81,6 +82,7 @@ import '../network/network_info.dart' as _i932;
 import '../services/analytics_service.dart' as _i222;
 import '../services/local_storage_service.dart' as _i527;
 import '../services/notification_service.dart' as _i941;
+import '../services/order_storage_service.dart' as _i213;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -108,8 +110,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i908.AuthInterceptor>(
       () => _i908.AuthInterceptor(gh<_i527.LocalStorageService>()),
     );
+    gh.lazySingleton<_i213.OrderStorageService>(
+      () => _i213.OrderStorageService(gh<_i527.LocalStorageService>()),
+    );
     gh.factory<_i1046.ProfileLocalDataSource>(
       () => _i1046.ProfileLocalDataSourceImpl(gh<_i527.LocalStorageService>()),
+    );
+    gh.factory<_i327.ProfileRemoteDataSource>(
+      () => _i327.ProfileRemoteDataSourceImpl(gh<_i213.OrderStorageService>()),
     );
     gh.lazySingleton<_i222.AnalyticsService>(
       () => _i222.ConsoleAnalyticsService(),
@@ -119,9 +127,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i557.ApiClient>(
       () => _i557.ApiClient(gh<_i908.AuthInterceptor>()),
-    );
-    gh.factory<_i327.ProfileRemoteDataSource>(
-      () => _i327.ProfileRemoteDataSourceImpl(),
     );
     gh.factory<_i25.CheckoutLocalDataSource>(
       () => _i25.CheckoutLocalDataSourceImpl(gh<_i527.LocalStorageService>()),
@@ -134,6 +139,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i659.AddToCartUseCase>(
       () => _i659.AddToCartUseCase(gh<_i322.CartRepository>()),
+    );
+    gh.factory<_i240.ClearCartUseCase>(
+      () => _i240.ClearCartUseCase(gh<_i322.CartRepository>()),
     );
     gh.factory<_i342.GetCartItemsUseCase>(
       () => _i342.GetCartItemsUseCase(gh<_i322.CartRepository>()),
@@ -158,14 +166,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i161.AuthRemoteDataSource>(
       () => _i306.AuthMockDataSource(gh<_i527.LocalStorageService>()),
     );
+    gh.factory<_i26.CheckoutRemoteDataSource>(
+      () => _i26.CheckoutRemoteDataSourceImpl(
+        gh<_i342.GetCartItemsUseCase>(),
+        gh<_i213.OrderStorageService>(),
+      ),
+    );
     gh.factory<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(
         gh<_i161.AuthRemoteDataSource>(),
         gh<_i932.NetworkInfo>(),
       ),
-    );
-    gh.factory<_i26.CheckoutRemoteDataSource>(
-      () => _i26.CheckoutRemoteDataSourceImpl(gh<_i342.GetCartItemsUseCase>()),
     );
     gh.lazySingleton<_i963.ProductRemoteDataSource>(
       () => _i963.ProductRemoteDataSourceImpl(gh<_i557.ApiClient>()),
@@ -232,6 +243,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i881.CheckoutBloc(
         createOrderSummaryUseCase: gh<_i238.CreateOrderSummaryUseCase>(),
         processPaymentUseCase: gh<_i117.ProcessPaymentUseCase>(),
+        clearCartUseCase: gh<_i240.ClearCartUseCase>(),
       ),
     );
     return this;

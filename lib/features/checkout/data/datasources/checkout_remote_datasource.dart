@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/services/order_storage_service.dart';
 import '../../../cart/domain/usecases/get_cart_items_usecase.dart';
 import '../../domain/entities/order_entity.dart';
 import '../../domain/entities/order_summary_entity.dart';
@@ -21,8 +22,12 @@ abstract class CheckoutRemoteDataSource {
 @Injectable(as: CheckoutRemoteDataSource)
 class CheckoutRemoteDataSourceImpl implements CheckoutRemoteDataSource {
   final GetCartItemsUseCase _getCartItemsUseCase;
+  final OrderStorageService _orderStorageService;
 
-  CheckoutRemoteDataSourceImpl(this._getCartItemsUseCase);
+  CheckoutRemoteDataSourceImpl(
+    this._getCartItemsUseCase,
+    this._orderStorageService,
+  );
 
   @override
   Future<OrderSummaryEntity> createOrderSummary() async {
@@ -56,7 +61,7 @@ class CheckoutRemoteDataSourceImpl implements CheckoutRemoteDataSource {
       // 2. Create order in backend
       // 3. Return order confirmation
 
-      // For now, create a mock successful order
+      // Create the order
       final order = OrderModel(
         id: 'order_${DateTime.now().millisecondsSinceEpoch}',
         userId: 'current_user_id', // Would come from auth
@@ -70,6 +75,9 @@ class CheckoutRemoteDataSourceImpl implements CheckoutRemoteDataSource {
         createdAt: DateTime.now(),
         estimatedDeliveryTime: orderSummary.estimatedDeliveryTime,
       );
+
+      // Save the order to local storage
+      await _orderStorageService.saveOrder(order);
 
       return order;
     } catch (e) {

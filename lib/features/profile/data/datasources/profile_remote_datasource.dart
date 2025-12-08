@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/services/order_storage_service.dart';
 import '../models/order_history_model.dart';
 
 /// Remote data source for profile feature
@@ -10,52 +11,59 @@ abstract class ProfileRemoteDataSource {
 
 @Injectable(as: ProfileRemoteDataSource)
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
-  ProfileRemoteDataSourceImpl();
+  final OrderStorageService _orderStorageService;
+
+  ProfileRemoteDataSourceImpl(this._orderStorageService);
 
   @override
   Future<List<OrderHistoryModel>> getOrderHistory() async {
     try {
-      // Simulate API call delay
-      await Future.delayed(const Duration(seconds: 1));
+      // Get actual orders from local storage
+      final orders = await _orderStorageService.getOrders();
 
-      // In a real app, this would call the backend API
-      // For now, return mock order history data
-      return _getMockOrderHistory();
+      // Convert OrderModel to OrderHistoryModel
+      final orderHistory = orders.map((order) {
+        // Extract sandwich names from cart items
+        final sandwichNames = order.items
+            .map((item) => item.product.name)
+            .toList();
+
+        return OrderHistoryModel(
+          id: order.id,
+          orderDate: order.createdAt,
+          sandwichNames: sandwichNames,
+          totalPrice: order.total,
+          status: _getOrderStatusText(order.status.toString()),
+        );
+      }).toList();
+
+      // Sort by date (newest first)
+      orderHistory.sort((a, b) => b.orderDate.compareTo(a.orderDate));
+
+      return orderHistory;
     } catch (e) {
       throw Exception('Failed to load order history: ${e.toString()}');
     }
   }
 
-  List<OrderHistoryModel> _getMockOrderHistory() {
-    return [
-      OrderHistoryModel(
-        id: 'order_001',
-        orderDate: DateTime.now().subtract(const Duration(days: 2)),
-        sandwichNames: ['Cheeseburger', 'Hamburger'],
-        totalPrice: 25.50,
-        status: 'Delivered',
-      ),
-      OrderHistoryModel(
-        id: 'order_002',
-        orderDate: DateTime.now().subtract(const Duration(days: 5)),
-        sandwichNames: ['Hamburger', 'Veggie Burger', 'Chicken Burger'],
-        totalPrice: 38.00,
-        status: 'Delivered',
-      ),
-      OrderHistoryModel(
-        id: 'order_003',
-        orderDate: DateTime.now().subtract(const Duration(days: 10)),
-        sandwichNames: ['Fried Chicken Burger'],
-        totalPrice: 12.50,
-        status: 'Delivered',
-      ),
-      OrderHistoryModel(
-        id: 'order_004',
-        orderDate: DateTime.now().subtract(const Duration(days: 15)),
-        sandwichNames: ['Cheeseburger', 'Chicken Burger'],
-        totalPrice: 22.00,
-        status: 'Delivered',
-      ),
-    ];
+  String _getOrderStatusText(String status) {
+    // Convert enum string to display text
+    final statusName = status.split('.').last;
+    switch (statusName) {
+      case 'pending':
+        return 'Pending';
+      case 'confirmed':
+        return 'Confirmed';
+      case 'preparing':
+        return 'Preparing';
+      case 'onTheWay':
+        return 'On The Way';
+      case 'delivered':
+        return 'Delivered';
+      case 'cancelled':
+        return 'Cancelled';
+      default:
+        return 'Unknown';
+    }
   }
 }
