@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
       final userData = json.decode(userDataString);
       setState(() {
         _userName = userData['name'] ?? '';
-        _userAddress = userData['address'] ?? 'No address provided';
+        _userAddress = userData['address'] ?? '123 Main st';
       });
     }
   }
