@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _userName = '';
+  String _userAddress = '';
   int _selectedCategoryIndex = 0;
   int _selectedBottomNavIndex = 0;
 
@@ -68,6 +69,7 @@ class _HomePageState extends State<HomePage> {
       final userData = json.decode(userDataString);
       setState(() {
         _userName = userData['name'] ?? '';
+        _userAddress = userData['address'] ?? 'No address provided';
       });
     }
   }
@@ -79,98 +81,106 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            // Top Bar with Logo and Profile
+            // Top Bar with Logo, Location, and Logout
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Logo and User Name
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: Image.asset(
-                          'assets/images/backgrounds/hun.png.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Hello, $_userName',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ],
+                  // Logo
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    child: Image.asset(
+                      'assets/images/backgrounds/hun.png.png',
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                  // My Profile Button and Logout
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const ProfilePage(),
+                  // Location Widget (Center)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: AppColors.primary,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  _userName,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  _userAddress,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black87,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                        child: const Text(
-                          'My Profile',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                            decoration: TextDecoration.underline,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Logout
+                  GestureDetector(
+                    onTap: () async {
+                      final storage = getIt<LocalStorageService>();
+                      await storage.remove(AppConstants.keyAuthToken);
+                      await storage.remove(AppConstants.keyIsLoggedIn);
+                      await storage.remove(AppConstants.keyUserData);
+                      if (context.mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => const LoginPage()),
+                        );
+                      }
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.exit_to_app,
+                            color: Colors.white,
+                            size: 24,
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      GestureDetector(
-                        onTap: () async {
-                          final storage = getIt<LocalStorageService>();
-                          await storage.remove(AppConstants.keyAuthToken);
-                          await storage.remove(AppConstants.keyIsLoggedIn);
-                          await storage.remove(AppConstants.keyUserData);
-                          if (context.mounted) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (_) => const LoginPage()),
-                            );
-                          }
-                        },
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Icon(
-                                Icons.exit_to_app,
-                                color: Colors.white,
-                                size: 24,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            const Text(
-                              'Log out',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ],
+                        const SizedBox(height: 4),
+                        const Text(
+                          'Log out',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
