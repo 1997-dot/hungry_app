@@ -88,13 +88,27 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Logo
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    child: Image.asset(
-                      'assets/images/backgrounds/hun.png.png',
-                      fit: BoxFit.contain,
-                    ),
+                  // Logo and Hello Text
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: Image.asset(
+                          'assets/images/backgrounds/hun.png.png',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Hello, $_userName',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
                   ),
                   // Location Widget (Center)
                   Expanded(
