@@ -17,31 +17,21 @@ class ProductModel extends ProductEntity {
   final List<SideOptionModel> availableSideOptions;
 
   const ProductModel({
-    required String id,
-    required String name,
-    required String description,
-    required double basePrice,
-    required String imageUrl,
-    required String thumbnailUrl,
-    required String category,
+    required super.id,
+    required super.name,
+    required super.description,
+    required super.basePrice,
+    required super.imageUrl,
+    required super.thumbnailUrl,
+    required super.category,
     this.availableToppings = const [],
     this.availableSideOptions = const [],
-    double spicyLevel = 0.0,
-    double rating = 0.0,
-    int reviewCount = 0,
+    super.spicyLevel,
+    super.rating,
+    super.reviewCount,
   }) : super(
-          id: id,
-          name: name,
-          description: description,
-          basePrice: basePrice,
-          imageUrl: imageUrl,
-          thumbnailUrl: thumbnailUrl,
-          category: category,
           availableToppings: availableToppings,
           availableSideOptions: availableSideOptions,
-          spicyLevel: spicyLevel,
-          rating: rating,
-          reviewCount: reviewCount,
         );
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>

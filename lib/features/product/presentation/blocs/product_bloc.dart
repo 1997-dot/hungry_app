@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 
 import '../../../cart/domain/entities/cart_item_entity.dart';
 import '../../../cart/domain/usecases/add_to_cart_usecase.dart';
-import '../../domain/entities/product_entity.dart';
 import '../../domain/usecases/get_product_details_usecase.dart';
 import 'product_event.dart';
 import 'product_state.dart';

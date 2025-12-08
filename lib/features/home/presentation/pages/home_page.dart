@@ -8,6 +8,7 @@ import '../../../../core/services/local_storage_service.dart';
 import '../../../auth/presentation/pages/login_page.dart';
 import '../../../cart/presentation/pages/cart_page.dart';
 import '../../../product/presentation/pages/product_details_page.dart';
+import '../../../profile/presentation/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -111,8 +112,12 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          // Navigate to profile page
-                          // TODO: Implement profile navigation
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const ProfilePage(),
+                            ),
+                          );
                         },
                         child: const Text(
                           'My Profile',
@@ -315,9 +320,12 @@ class _HomePageState extends State<HomePage> {
                   icon: Icons.person,
                   isSelected: _selectedBottomNavIndex == 3,
                   onTap: () {
-                    setState(() {
-                      _selectedBottomNavIndex = 3;
-                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const ProfilePage(),
+                      ),
+                    );
                   },
                 ),
               ],

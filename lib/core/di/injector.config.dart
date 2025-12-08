@@ -60,6 +60,19 @@ import '../../features/product/domain/repositories/product_repository.dart'
 import '../../features/product/domain/usecases/get_product_details_usecase.dart'
     as _i133;
 import '../../features/product/presentation/blocs/product_bloc.dart' as _i1008;
+import '../../features/profile/data/datasources/profile_local_datasource.dart'
+    as _i1046;
+import '../../features/profile/data/datasources/profile_remote_datasource.dart'
+    as _i327;
+import '../../features/profile/data/repositories/profile_repository_impl.dart'
+    as _i334;
+import '../../features/profile/domain/repositories/profile_repository.dart'
+    as _i894;
+import '../../features/profile/domain/usecases/get_order_history_usecase.dart'
+    as _i303;
+import '../../features/profile/domain/usecases/get_user_profile_usecase.dart'
+    as _i146;
+import '../../features/profile/presentation/blocs/profile_bloc.dart' as _i133;
 import '../../features/splash/domain/usecases/check_auth_usecase.dart' as _i77;
 import '../../features/splash/presentation/blocs/splash_bloc.dart' as _i145;
 import '../network/api_client.dart' as _i557;
@@ -95,6 +108,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i908.AuthInterceptor>(
       () => _i908.AuthInterceptor(gh<_i527.LocalStorageService>()),
     );
+    gh.factory<_i1046.ProfileLocalDataSource>(
+      () => _i1046.ProfileLocalDataSourceImpl(gh<_i527.LocalStorageService>()),
+    );
     gh.lazySingleton<_i222.AnalyticsService>(
       () => _i222.ConsoleAnalyticsService(),
     );
@@ -103,6 +119,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i557.ApiClient>(
       () => _i557.ApiClient(gh<_i908.AuthInterceptor>()),
+    );
+    gh.factory<_i327.ProfileRemoteDataSource>(
+      () => _i327.ProfileRemoteDataSourceImpl(),
     );
     gh.factory<_i25.CheckoutLocalDataSource>(
       () => _i25.CheckoutLocalDataSourceImpl(gh<_i527.LocalStorageService>()),
@@ -151,6 +170,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i963.ProductRemoteDataSource>(
       () => _i963.ProductRemoteDataSourceImpl(gh<_i557.ApiClient>()),
     );
+    gh.factory<_i894.ProfileRepository>(
+      () => _i334.ProfileRepositoryImpl(
+        localDataSource: gh<_i1046.ProfileLocalDataSource>(),
+        remoteDataSource: gh<_i327.ProfileRemoteDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i39.ProductRepository>(
       () => _i1040.ProductRepositoryImpl(gh<_i963.ProductRemoteDataSource>()),
     );
@@ -173,6 +198,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i48.LogoutUseCase>(),
       ),
     );
+    gh.factory<_i303.GetOrderHistoryUseCase>(
+      () => _i303.GetOrderHistoryUseCase(gh<_i894.ProfileRepository>()),
+    );
+    gh.factory<_i146.GetUserProfileUseCase>(
+      () => _i146.GetUserProfileUseCase(gh<_i894.ProfileRepository>()),
+    );
     gh.factory<_i498.CheckoutRepository>(
       () => _i949.CheckoutRepositoryImpl(
         remoteDataSource: gh<_i26.CheckoutRemoteDataSource>(),
@@ -183,6 +214,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1008.ProductBloc(
         gh<_i133.GetProductDetailsUseCase>(),
         gh<_i659.AddToCartUseCase>(),
+      ),
+    );
+    gh.factory<_i133.ProfileBloc>(
+      () => _i133.ProfileBloc(
+        getUserProfileUseCase: gh<_i146.GetUserProfileUseCase>(),
+        getOrderHistoryUseCase: gh<_i303.GetOrderHistoryUseCase>(),
       ),
     );
     gh.factory<_i238.CreateOrderSummaryUseCase>(

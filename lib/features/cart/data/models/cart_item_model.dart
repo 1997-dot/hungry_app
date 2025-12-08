@@ -25,20 +25,17 @@ class CartItemModel extends CartItemEntity {
   final DateTime addedAt;
 
   const CartItemModel({
-    required String id,
+    required super.id,
     required this.product,
-    required int quantity,
+    required super.quantity,
     this.selectedToppings = const [],
     this.selectedSideOptions = const [],
-    double spicyLevel = 0.0,
+    super.spicyLevel,
     required this.addedAt,
   }) : super(
-          id: id,
           product: product,
-          quantity: quantity,
           selectedToppings: selectedToppings,
           selectedSideOptions: selectedSideOptions,
-          spicyLevel: spicyLevel,
           addedAt: addedAt,
         );
 
