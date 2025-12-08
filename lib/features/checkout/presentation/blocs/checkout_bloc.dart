@@ -134,8 +134,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
 
     final result = await _processPaymentUseCase(params);
 
-    result.fold(
-      (failure) {
+    await result.fold(
+      (failure) async {
         emit(CheckoutError(failure.message));
         emit(currentState);
       },
